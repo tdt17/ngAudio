@@ -293,7 +293,7 @@ angular.module('ngAudio', [])
           $looping = newValue.loop;
 
           if (newValue.muting !== oldValue.muting || newValue.globalMuting !== oldValue.globalMuting) {
-            audioObject.setMuting(newValue.muting || oldValue.globalMuting);
+            audioObject.setMuting(newValue.muting || newValue.globalMuting);
           }
         }, true);
       }
