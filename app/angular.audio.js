@@ -152,7 +152,6 @@ angular.module('ngAudio', [])
     },
     callListeners: function() {
       for(var i in this.listeners) {
-        console.log(this.listeners);
         this.listeners[i](this);
       }
     }
@@ -173,7 +172,7 @@ angular.module('ngAudio', [])
         $willRestart = false,
         $willChangePlaybackRate = false,
         $newPlaybackRate = false,
-        $volumeToSet,
+        $volumeToSet = ngAudioGlobals.volume,
         $looping,
         $muting = false,
         $observeProperties = true,
@@ -335,7 +334,6 @@ angular.module('ngAudio', [])
         });
 
       function checkWatchers() {
-        console.log($muting,ngAudioGlobals.muting, audioObject.volume, audio.volume);
         if (audio) {
           if ($muting || ngAudioGlobals.muting) {
             audio.volume = 0;
@@ -397,9 +395,11 @@ angular.module('ngAudio', [])
               audioObject.setCurrentTime(0);
               audioObject.play();
             }
-            $updating = true;
-            $scope.$digest();
-            $updating = false;
+            if(!$scope.$$phase) {
+              $updating = true;
+              $scope.$digest();
+              $updating = false;
+            }
           }
 
           if (!$muting && !ngAudioGlobals.muting) {
